@@ -1,0 +1,27 @@
+select
+  o.Date as order_date,
+  pc.CategoryName as category_name,
+  p.ProdName as product_name,
+  p.Price as product_price,
+  o.Quantity as order_qty,
+  round(sum(p.Price * o.Quantity), 2) as total_sales,
+  c.CustomerEmail as cust_email,
+  c.CustomerCity as cust_city
+from
+  TableMaster.Orders o
+  join 
+    TableMaster.Customers c on o.CustomerID = c.CustomerID
+  join 
+    TableMaster.Products p on o.ProdNumber = p.ProdNumber
+  join 
+    TableMaster.ProductCategory pc on p.Category = pc.CategoryID
+group by
+  o.Date,
+  pc.CategoryName,
+  p.ProdName,
+  p.Price,
+  o.Quantity,
+  c.CustomerEmail,
+  c.CustomerCity
+order by
+o.Date;
